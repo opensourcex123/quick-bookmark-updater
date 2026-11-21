@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>一键更新书签</title>
+  <link rel="icon" href="icons/bookmark-16.png">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="popup-header">
+    <img src="icons/bookmark-128.png" width="48" height="48" alt="">
+    <div>
+      <h1>一键更新书签</h1>
+      <p>把当前网页存为追剧进度</p>
+    </div>
+  </header>
+  <main>
+    <form id="settings">
+      <label for="bookmarks">要更新的书签</label>
+      <div class="select-field">
+        <select id="bookmarks" aria-describedby="status" required disabled>
+          <option value="">请选择一个书签</option>
+        </select>
+      </div>
+      <p id="status" role="status">正在读取书签…</p>
+      <button id="save" type="submit" disabled>保存选择</button>
+    </form>
+    <section class="shortcut-panel" aria-labelledby="shortcut-label">
+      <div>
+        <h2 id="shortcut-label">更新快捷键</h2>
+        <p id="shortcut" aria-live="polite">正在读取…</p>
+      </div>
+      <a id="configure-shortcut" href="chrome://extensions/shortcuts">
+        设置快捷键 <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
