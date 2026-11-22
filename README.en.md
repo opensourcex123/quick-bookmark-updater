@@ -21,6 +21,8 @@ The extension interface is currently in Simplified Chinese.
 2. Open the HTTP or HTTPS page you want to keep and press **Alt + S**.
 3. When the extension icon shows **OK**, the original bookmark will take you to the new URL.
 
+The **OK** and **ERR** toolbar badges disappear after 4 seconds.
+
 When the popup opens, it preselects a bookmark whose URL exactly matches the current page. If multiple bookmarks match, it prefers the one opened most recently. If the matching bookmarks have tied or missing last-opened times, choose from the list. Click **保存选择** to change which bookmark the shortcut updates.
 
 ## Troubleshooting

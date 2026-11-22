@@ -1,4 +1,7 @@
+const badgeDurationMs = 4000;
+const defaultTitle = chrome.runtime.getManifest().action.default_title;
 let pendingUpdate = Promise.resolve();
+let badgeTimeout;
 
 chrome.commands.onCommand.addListener((command, tab) => {
   if (command !== "update-bookmark") return;
@@ -9,6 +12,10 @@ chrome.commands.onCommand.addListener((command, tab) => {
 });
 
 async function updateBookmark(url) {
+  if (badgeTimeout !== undefined) {
+    await clearBadge().catch(error => console.warn("无法清除上次更新状态", error));
+  }
+
   let message;
 
   try {
@@ -29,6 +36,24 @@ async function updateBookmark(url) {
   await Promise.all([
     chrome.action.setBadgeBackgroundColor({ color: message ? "#b91c1c" : "#15803d" }),
     chrome.action.setBadgeText({ text: message ? "ERR" : "OK" }),
-    chrome.action.setTitle({ title: message ?? "一键更新书签 · 网址已更新" })
+    chrome.action.setTitle({ title: message ?? `${defaultTitle} · 网址已更新` })
+  ]);
+
+  const timeout = setTimeout(() => {
+    pendingUpdate = pendingUpdate
+      .then(() => {
+        if (badgeTimeout === timeout) return clearBadge();
+      })
+      .catch(error => console.error("无法清除书签更新状态", error));
+  }, badgeDurationMs);
+  badgeTimeout = timeout;
+}
+
+async function clearBadge() {
+  clearTimeout(badgeTimeout);
+  badgeTimeout = undefined;
+  await Promise.all([
+    chrome.action.setBadgeText({ text: "" }),
+    chrome.action.setTitle({ title: defaultTitle })
   ]);
 }
